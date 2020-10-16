@@ -1,0 +1,24 @@
+{
+  "name": "salestogether",
+  "version": "1.0.0",
+  "description": "daap to allow Sales teams share valuable information and get rewards in aTokens for that  ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damivazbien/SalesTogether.git"
+  },
+  "keywords": [
+    "Ethereum",
+    "Compound",
+    "AAVE"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/damivazbien/SalesTogether/issues"
+  },
+  "homepage": "https://github.com/damivazbien/SalesTogether#readme"
+}
