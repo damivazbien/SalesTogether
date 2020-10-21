@@ -1,32 +1,5 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.5.12;
-
-
-contract SalesFactory {
-    SalesTogether[] public deployedSales;
-    
-    function createSales(uint signalPrice) public {
-        SalesTogether newSales = new SalesTogether(signalPrice, msg.sender);
-        deployedSales.push(newSales);
-    }
-    
-    function getDeployedSales() public view returns (SalesTogether[] memory){
-        return deployedSales;
-    }  
-}
-
-interface CEth {
-    function mint() external payable;
-
-    function exchangeRateCurrent() external returns (uint256);
-
-    function supplyRatePerBlock() external returns (uint256);
-
-    function redeem(uint) external returns (uint);
-
-    function redeemUnderlying(uint) external returns (uint);
-}
 
 /** 
  * @title SalesTogether
@@ -46,16 +19,22 @@ contract SalesTogether {
     address public _manager;
     uint public _signalPrice;
     uint public _fundCampaign;
+    uint public _revealCount;
+    string _title;
+    string _description;
     address[] public signalsSender;
+
     
     modifier restricted() {
         require(msg.sender == _manager);
         _;
     }
    
-    constructor(uint signalPrice, address creator) public {
+    constructor(uint signalPrice, address creator, string memory title, string memory description) public {
         _manager = creator;
         _signalPrice = signalPrice;
+        _title = title;
+        _description = description;
 
     }
     
@@ -63,25 +42,6 @@ contract SalesTogether {
         _fundCampaign = msg.value;
     }
     
-    function supplyEthToCompound(address payable _cEtherContract)
-        public
-        payable
-        returns (bool)
-    {
-        // Create a reference to the corresponding cToken contract
-        CEth cToken = CEth(_cEtherContract);
-
-        // Amount of current exchange rate from cToken to underlying
-        uint256 exchangeRateMantissa = cToken.exchangeRateCurrent();
-        emit MyLog("Exchange Rate (scaled up by 1e18): ", exchangeRateMantissa);
-
-        // Amount added to you supply balance this block
-        uint256 supplyRateMantissa = cToken.supplyRatePerBlock();
-        emit MyLog("Supply Rate: (scaled up by 1e18)", supplyRateMantissa);
-
-        cToken.mint.value(msg.value).gas(250000)();
-        return true;
-    }
     
     //create Signal to share in the campaign
     function createSignal(string memory title, string memory description,  address payable provaider) public {
@@ -103,6 +63,7 @@ contract SalesTogether {
         require( mysignal.pay != true);
         mysignal.pay = true;
         mysignal.provaider.transfer(_signalPrice);
+        _revealCount++;
         
     }
     
@@ -139,5 +100,22 @@ contract SalesTogether {
                 mysignal.provaider,
                 mysignal.pay
             );
-    }    
+    }
+
+    //get summary of this sales campaign
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return (
+            _fundCampaign,
+            address(this).balance,
+            _signals.length,
+            _revealCount,
+            _manager
+        );
+    }
+
+    //get amount of signals send
+    function getSignalsCount() public view returns (uint) {
+        return _signals.length;
+    }
+
 }
