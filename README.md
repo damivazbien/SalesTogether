@@ -6,12 +6,10 @@ need to deposit Orcatoken (or another ETH/Link/AAVE) to participate in the smart
 
 request for more information to the community the bloggers send add more value to this information, sending a transaction and participate in the smart contract when sales reps see that the signal now is useful, the pay of in token to the rest of the bloggers that help to create the strong signal the pay is in orc token or in the token that the user decides to use at the beginning
 
-## Installation
+## ETHOnline - showcase
 
-## Usage
+https://hack.ethglobal.co/showcase/salestogether-recAr7dmN75YOAguy
 
-
-## Contributing
 
 
 ## License
